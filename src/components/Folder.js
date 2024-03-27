@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useState } from "react";
 
-const Folder = ({explorer}) => {
+const Folder = ({ explorer }) => {
+  const [expand, setExpand] = useState(false);
 
-  return (
-    <div>
-        {explorer.name}
-    </div>
-  )
-}
+  // checking if its a folder or file
+  if (explorer.isFolder) {
+    return (
+      <div>
+        {/* printing the folder name */}
+        <div className="folder" onClick={() => setExpand(!expand)}>
+          <span>📁 {explorer.name}</span>
+        </div>
 
-export default Folder
+        {/* iterating through folder items */}
+        <div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
+          {explorer.items.map((exp) => {
+            return <Folder explorer={exp} key={exp.id} />;
+          })}
+        </div>
+      </div>
+    );
+  } else {
+    // returning file
+    return <span className="file">📄 {explorer.name}</span>;
+  }
+};
+
+export default Folder;
