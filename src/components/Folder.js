@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Folder = ({ explorer }) => {
+const Folder = ({ explorer, handleInsertNode }) => {
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
     visible: false,
@@ -17,12 +17,13 @@ const Folder = ({ explorer }) => {
     });
   };
 
-  // handler for adding new folder or file
-  const onAddFolder = ((e)=>{
-    if (e.keyCode === 13 && e.target.value){
-      setShowInput({...showInput, visible: false});
+  // handler for pressing enter button
+  const onAddFolder = (e) => {
+    if (e.keyCode === 13 && e.target.value) {
+      handleInsertNode(explorer.id, e.target.value, showInput.isFolder);
+      setShowInput({ ...showInput, visible: false });
     }
-  })
+  };
 
   // checking if its a folder or file
   if (explorer.isFolder) {
@@ -49,20 +50,25 @@ const Folder = ({ explorer }) => {
                 autoFocus
                 type="text"
                 onBlur={() => setShowInput({ ...showInput, visible: false })}
-                onKeyDown={(e)=>onAddFolder(e)}
+                onKeyDown={(e) => onAddFolder(e)}
               />
             </div>
           )}
 
           {/* iterating through folder items */}
           {explorer.items.map((exp) => {
-            return <Folder explorer={exp} key={exp.id} />;
+            return (
+              <Folder
+                handleInsertNode={handleInsertNode}
+                explorer={exp}
+                key={exp.id}
+              />
+            );
           })}
         </div>
       </div>
     );
   } else {
-    // returning file
     return <span className="file">📄 {explorer.name}</span>;
   }
 };
