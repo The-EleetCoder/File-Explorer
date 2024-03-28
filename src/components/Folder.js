@@ -10,6 +10,12 @@ const Folder = ({ explorer }) => {
         {/* printing the folder name */}
         <div className="folder" onClick={() => setExpand(!expand)}>
           <span>📁 {explorer.name}</span>
+
+          {/* buttons */}
+          <div className="button-div">
+            <button>📁+</button>
+            <button>📄+</button>
+          </div>
         </div>
 
         {/* iterating through folder items */}
